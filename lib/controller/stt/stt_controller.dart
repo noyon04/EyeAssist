@@ -1,9 +1,13 @@
+
+import 'dart:io';
 import 'dart:math';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:eye_assist/constants/output_string.dart';
 
 import 'package:eye_assist/controller/stt/state/stt_state.dart';
 import 'package:eye_assist/controller/tts/tts_controller.dart';
+import 'package:eye_assist/views/screens/money_recognition/utils/image_utils.dart';
+import 'package:image/image.dart' as imgLib;
 import 'package:eye_assist/services/navigation_service.dart';
 
 // import 'package:eye_assist/views/screens/object_detection/tflite/recognition.dart';
@@ -19,6 +23,7 @@ import 'package:eye_assist/views/screens/object_detection/ui/camera_view_singlet
 import 'package:eye_assist/views/screens/object_detection/ui/home_view.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
@@ -27,6 +32,8 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:weather/weather.dart';
@@ -84,6 +91,23 @@ class SttController extends StateNotifier<SttState> {
     }
   }
 
+  Future requestStoragePermission() async {
+  PermissionStatus status = await Permission.storage.request();
+
+  if (status.isGranted) {
+    print("Storage Permission granted");
+    //return true;
+  } else if (status.isDenied) {
+     print("Storage Permission not granted");
+    // The permission was denied.
+  //  return false;
+  }
+
+  // Handle other permission states if needed.
+  //return false;
+  
+}
+
   ///location permission end///
 
   Future<void> initStt() async {
@@ -92,7 +116,9 @@ class SttController extends StateNotifier<SttState> {
       onStatus: statusListener,
       debugLogging: true,
     );
+    await requestStoragePermission();
     locationPermission();
+    
   }
 
   Future startListening() async {
@@ -295,7 +321,7 @@ class SttController extends StateNotifier<SttState> {
 
 
    void moneyRecognitionProcess(List<MoneyRecognition> results, CameraImage image,) {
-    var size = CameraViewSingleton.inputImageSize!.width;
+   //var size = CameraViewSingleton.inputImageSize!.width;
    
     finalAllMoney={};
  
@@ -338,6 +364,11 @@ class SttController extends StateNotifier<SttState> {
        toast('Sorry, i cant find anything');
     }
   }
+  
+
+
+
+
 
   void processResults(String userCommand) {
     print(userCommand);

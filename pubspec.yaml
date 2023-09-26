@@ -57,6 +57,8 @@ dependencies:
   google_ml_kit: ^0.11.0
   http: ^0.13.3
 
+  permission_handler:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

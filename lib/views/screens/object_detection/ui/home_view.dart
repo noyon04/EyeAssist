@@ -21,7 +21,7 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   /// Results to draw bounding boxes
-  List<Recognition>? results;
+  List<Recognition>results  = [];
   final CameraService _cameraService = CameraService();
   List<String> re = [];
   var mid = {};
@@ -66,6 +66,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
         children: <Widget>[
         
           CameraView(resultsCallback, statsCallback),
+          
+          boundingBoxes(results),
 
           InkWell(
             onTap: () {
@@ -93,7 +95,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   /// Returns Stack of bounding boxes
   Widget boundingBoxes(List<Recognition> results) {
-    if (results == null) {
+    if (results.isEmpty) {
       return Container();
     }
     return Stack(
@@ -111,6 +113,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
    // Future.delayed(Duration(milliseconds: 2000), () {
       ref.watch(sttProvider.notifier).objectDetectionProcess(results, cameraImage);
    // });
+   setState(() {
+     this.results = results;
+   });
    
   }
 

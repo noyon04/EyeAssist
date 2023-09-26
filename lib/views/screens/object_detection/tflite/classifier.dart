@@ -126,6 +126,11 @@ class Classifier {
     TensorBuffer outputScores = TensorBufferFloat(_outputShapes![2]);
     TensorBuffer numLocations = TensorBufferFloat(_outputShapes![3]);
 
+    print("Output Locations Shape: ${outputLocations.shape}");
+    print("Output Classes Shape: ${outputClasses.shape}");
+    print("Output Scores Shape: ${outputScores.shape}");
+    print("Num Locations Shape: ${numLocations.shape}");
+
     // Inputs object for runForMultipleInputs
     // Use [TensorImage.buffer] or [TensorBuffer.buffer] to pass by reference
     List<Object> inputs = [inputImage.buffer];

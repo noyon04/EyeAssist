@@ -2,6 +2,7 @@ import 'package:eye_assist/controller/camera/camera_controller.dart';
 import 'package:eye_assist/controller/stt/stt_controller.dart';
 import 'package:camera/camera.dart';
 import 'package:eye_assist/services/camera_service.dart';
+import 'package:eye_assist/views/screens/money_recognition/utils/image_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eye_assist/views/screens/money_recognition/tflite/money_recognition.dart';
@@ -21,7 +22,7 @@ class HomeViewMoney extends ConsumerStatefulWidget {
 
 class _HomeViewMoneyState extends ConsumerState<HomeViewMoney> {
   /// Results to draw bounding boxes
-  List<MoneyRecognition>? results;
+  List<MoneyRecognition> results=[];
   final CameraService _cameraService = CameraService();
   List<String> re = [];
   var mid = {};
@@ -29,6 +30,8 @@ class _HomeViewMoneyState extends ConsumerState<HomeViewMoney> {
   var right = {};
 
   Future? _initializeControllerFuture;
+  CameraImage? img;
+  
 
   /// Realtime stats
   Stats? stats;
@@ -66,7 +69,7 @@ class _HomeViewMoneyState extends ConsumerState<HomeViewMoney> {
         children: <Widget>[
         
           CameraView(resultsCallback, statsCallback),
-
+      //    boundingBoxes(results),
           InkWell(
             onTap: () {
               getOutputs();
@@ -93,7 +96,7 @@ class _HomeViewMoneyState extends ConsumerState<HomeViewMoney> {
 
   /// Returns Stack of bounding boxes
   Widget boundingBoxes(List<MoneyRecognition> results) {
-    if (results == null) {
+    if (results.isEmpty) {
       return Container();
     }
     return Stack(
@@ -111,11 +114,16 @@ class _HomeViewMoneyState extends ConsumerState<HomeViewMoney> {
    // Future.delayed(Duration(milliseconds: 2000), () {
       ref.watch(sttProvider.notifier).moneyRecognitionProcess(results, cameraImage);
    // });
+  //  setState(() {
+  //   this.results = results;
+  //  //  this.img = cameraImage;
+  //  });
    
   }
 
   getOutputs() {
-   
+    //var convertedImg = ImageUtils.convertCameraImage(img!);
+    //ImageUtils.saveImage2(convertedImg, 120);
     ref.watch(sttProvider.notifier).speakMoneyDetectionResults();
     
   }

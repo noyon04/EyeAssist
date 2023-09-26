@@ -77,4 +77,21 @@ class ImageUtils {
     await fileOnDevice.writeAsBytes(jpeg, flush: true);
     print('Saved $appPath/out$i.jpg');
   }
+  static Future<void> saveImage2(imageLib.Image image, [int i = 0]) async {
+  List<int> jpeg = imageLib.JpegEncoder().encodeImage(image);
+
+  // Use the path_provider to get the path to the device's directory
+  final appDir = await getExternalStorageDirectory();
+
+  // Choose a specific directory (or create one)
+  final targetDirectory = Directory("${appDir!.path}/Fonts");
+  if (!targetDirectory.existsSync()) {
+    targetDirectory.createSync(recursive: true);
+  }
+
+  final fileOnDevice = File('${targetDirectory.path}/out$i.jpg');
+  await fileOnDevice.writeAsBytes(jpeg, flush: true);
+  print('Saved ${targetDirectory.path}/out$i.jpg');
+}
+
 }
