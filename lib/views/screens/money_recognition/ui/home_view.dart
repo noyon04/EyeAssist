@@ -10,8 +10,10 @@ import 'package:eye_assist/views/screens/money_recognition/tflite/stats.dart';
 import 'package:eye_assist/views/screens/money_recognition/ui/box_widget.dart';
 import 'package:eye_assist/views/screens/money_recognition/ui/camera_view_singleton.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 
 
+import '../../../styles/b_style.dart';
 import 'camera_view.dart';
 
 /// [HomeView] stacks [CameraView] and [BoxWidget]s with bottom sheet for stats
@@ -70,6 +72,43 @@ class _HomeViewMoneyState extends ConsumerState<HomeViewMoney> {
         
           CameraView(resultsCallback, statsCallback),
       //    boundingBoxes(results),
+
+      Align(
+                alignment: Alignment.bottomRight,
+                child: GlassmorphicContainer(
+                  width: 150,
+                  height: 150,
+                  borderRadius: 20,
+                  blur: 20,
+                  alignment: Alignment.bottomCenter,
+                  border: 2,
+                  linearGradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color.fromARGB(255, 53, 49, 49).withOpacity(0.1),
+                        Color.fromARGB(255, 110, 98, 98).withOpacity(0.05),
+                      ],
+                      stops: [
+                        0.1,
+                        1,
+                      ]),
+                  borderGradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFFffffff).withOpacity(0.5),
+                      Color((0xFFFFFFFF)).withOpacity(0.5),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                "Tap to hear the output\n Double tap to back",
+                style: KTextStyle.bodyText1.copyWith(color: KColor.white),
+                textAlign: TextAlign.center,
+              )),
+                  ),
+                ),
           InkWell(
             onTap: () {
               getOutputs();

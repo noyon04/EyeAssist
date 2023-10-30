@@ -221,9 +221,11 @@ class Classifier {
     for (int i = 0; i < resultsCount; i++) {
       // Prediction score
       var score = outputScores.getDoubleValue(i);
-      print(score.toString()+ "score");
+     // print(score.toString()+ "score");
       // Label string
+    //  print("from output class"+outputClasses.getIntValue(i).toString());
       var labelIndex = outputClasses.getIntValue(i) + labelOffset;
+      //print(labelIndex);
       if(labelIndex>3){
         labelIndex--;
       }

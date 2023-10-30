@@ -17,7 +17,7 @@ import 'package:camera/camera.dart';
 
 import 'package:eye_assist/views/screens/money_recognition/tflite/money_recognition.dart';
 import 'package:eye_assist/views/screens/money_recognition/ui/home_view.dart';
-import 'package:eye_assist/views/screens/news_screen/news_screen.dart';
+
 import 'package:eye_assist/views/screens/object_detection/tflite/recognition.dart';
 import 'package:eye_assist/views/screens/object_detection/ui/camera_view_singleton.dart';
 import 'package:eye_assist/views/screens/object_detection/ui/home_view.dart';
@@ -437,13 +437,14 @@ class SttController extends StateNotifier<SttState> {
 
       //Money recognition end ///
 
-      // News update start //
-      else if (userCommand.contains("news")) {
-        speak("Touch the screen to start listen News, And double tap to back to home screen. ");
-        NavigationService.navigateTo(
-            CupertinoPageRoute(builder: (context) => NewsScreen()));
-      }
-      // News update end //
+      //// News update start //
+      // else if (userCommand.contains("news")) {
+      //   speak("Touch the screen to start listen News, And double tap to back to home screen. ");
+      //   NavigationService.navigateTo(
+      //       CupertinoPageRoute(builder: (context) => NewsScreen()));
+      // }
+      //// News update end //
+      
 
       else{
         speak("Sorry, I don't understand.");

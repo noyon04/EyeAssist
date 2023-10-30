@@ -38,26 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           backgroundColor: KColor.secondary,
           body: Stack(
             children: [
-              InkWell(
-                onTap: () {
-                  if (ttsState is TtsLoadingState ||
-                      sttState is SttLoadingState) {
-                    ref.read(ttsProvider.notifier).stopTts();
-                    ref.read(sttProvider.notifier).stopListening();
-                    ref.watch(sttProvider.notifier).startListening();
-                  } else {
-                    ref.watch(sttProvider.notifier).startListening();
-                  }
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  // child: Image.asset(
-                  //   AssetPath.backgroundPic,
-                  //   fit: BoxFit.cover,
-                  // ),
-                ),
-              ),
+             
               Align(
                   alignment: Alignment.center,
                 child: TableScreen()),
@@ -99,6 +80,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                ),
+              ),
+
+               InkWell(
+                onTap: () {
+                  if (ttsState is TtsLoadingState ||
+                      sttState is SttLoadingState) {
+                    ref.read(ttsProvider.notifier).stopTts();
+                    ref.read(sttProvider.notifier).stopListening();
+                    ref.watch(sttProvider.notifier).startListening();
+                  } else {
+                    ref.watch(sttProvider.notifier).startListening();
+                  }
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  // child: Image.asset(
+                  //   AssetPath.backgroundPic,
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
               ),
             ],

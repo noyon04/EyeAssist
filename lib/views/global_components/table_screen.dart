@@ -16,7 +16,7 @@ class TableScreen extends StatelessWidget {
           TableRowWidget('"Location"', 'Exact location with postal code'),
           TableRowWidget('"Weather"', 'Weather update'),
           TableRowWidget('"Battery charge" or "Phone charge" or "Battery percentage"', 'Remaining Charge'),
-          TableRowWidget('"News"', 'News Update'),
+          // TableRowWidget('"News"', 'News Update'),
           
           
         ],

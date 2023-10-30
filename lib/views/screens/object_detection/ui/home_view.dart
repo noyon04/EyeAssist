@@ -1,5 +1,6 @@
 import 'package:eye_assist/controller/stt/stt_controller.dart';
 import 'package:camera/camera.dart';
+import 'package:eye_assist/views/styles/b_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eye_assist/views/screens/object_detection/tflite/recognition.dart';
@@ -7,6 +8,7 @@ import 'package:eye_assist/views/screens/object_detection/tflite/stats.dart';
 import 'package:eye_assist/views/screens/object_detection/ui/box_widget.dart';
 import 'package:eye_assist/views/screens/object_detection/ui/camera_view_singleton.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../../controller/camera/camera_controller.dart';
@@ -21,7 +23,7 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   /// Results to draw bounding boxes
-  List<Recognition>results  = [];
+  List<Recognition> results = [];
   final CameraService _cameraService = CameraService();
   List<String> re = [];
   var mid = {};
@@ -47,10 +49,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   _start() async {
     var description = ref.watch(cameraProvider.notifier).cameraDescriptionFront;
-    
+
     _initializeControllerFuture = _cameraService.startService(description!);
     await _initializeControllerFuture!;
-     setState(() {
+    setState(() {
       //cameraInitializated = true;
     });
   }
@@ -64,21 +66,55 @@ class _HomeViewState extends ConsumerState<HomeView> {
       backgroundColor: Colors.black,
       body: Stack(
         children: <Widget>[
-        
           CameraView(resultsCallback, statsCallback),
-          
           boundingBoxes(results),
-
+          Align(
+                alignment: Alignment.bottomRight,
+                child: GlassmorphicContainer(
+                  width: 150,
+                  height: 150,
+                  borderRadius: 20,
+                  blur: 20,
+                  alignment: Alignment.bottomCenter,
+                  border: 2,
+                  linearGradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color.fromARGB(255, 53, 49, 49).withOpacity(0.1),
+                        Color.fromARGB(255, 110, 98, 98).withOpacity(0.05),
+                      ],
+                      stops: [
+                        0.1,
+                        1,
+                      ]),
+                  borderGradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFFffffff).withOpacity(0.5),
+                      Color((0xFFFFFFFF)).withOpacity(0.5),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                "Tap to hear the output\n Double tap to back",
+                style: KTextStyle.bodyText1.copyWith(color: KColor.white),
+                textAlign: TextAlign.center,
+              )),
+                  ),
+                ),
+            
+          
           InkWell(
             onTap: () {
               getOutputs();
             },
-            onDoubleTap: (){
+            onDoubleTap: () {
               ref.watch(sttProvider.notifier).backHomeSpeech();
-              Future.delayed(Duration(seconds: 2),(){
-                 Navigator.pop(context);
+              Future.delayed(Duration(seconds: 2), () {
+                Navigator.pop(context);
               });
-             
             },
             child: Container(
               height: MediaQuery.of(context).size.height,
@@ -86,8 +122,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
               color: Colors.transparent,
             ),
           ),
-
-      
         ],
       ),
     );
@@ -109,20 +143,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   /// Callback to get inference results from [CameraView]
   void resultsCallback(List<Recognition> results, CameraImage cameraImage) {
-   
-   // Future.delayed(Duration(milliseconds: 2000), () {
-      ref.watch(sttProvider.notifier).objectDetectionProcess(results, cameraImage);
-   // });
-   setState(() {
-     this.results = results;
-   });
-   
+    // Future.delayed(Duration(milliseconds: 2000), () {
+    ref
+        .watch(sttProvider.notifier)
+        .objectDetectionProcess(results, cameraImage);
+    // });
+    setState(() {
+      this.results = results;
+    });
   }
 
   getOutputs() {
-   
     ref.watch(sttProvider.notifier).speakDetectionResults();
-    
   }
 
   /// Callback to get inference stats from [CameraView]

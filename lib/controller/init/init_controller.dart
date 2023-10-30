@@ -1,5 +1,5 @@
 
-import 'package:eye_assist/controller/news/news_controller.dart';
+
 import 'package:eye_assist/controller/stt/stt_controller.dart';
 import 'package:eye_assist/controller/tts/tts_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +17,7 @@ class InitController extends StateNotifier<Type>{
      try{
       await ref.read(ttsProvider.notifier).initTts();
     await  ref.read(sttProvider.notifier).initStt();
-    await ref.read(newsProvider.notifier).fetchNews();
+    
      }catch(error,stackTrace){
        print(error);
       print(stackTrace);
